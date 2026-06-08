@@ -1,9 +1,8 @@
 // ============================================================
-// DevBoard Database Types
+// JobCanvas Database Types
 // TypeScript interfaces matching the Supabase schema
 // ============================================================
 
-export type SubscriptionTier = 'free' | 'pro'
 
 export type ApplicationStatus =
   | 'wishlist'
@@ -24,11 +23,6 @@ export interface Profile {
   id: string
   full_name: string | null
   avatar_url: string | null
-  subscription_tier: SubscriptionTier
-  stripe_customer_id: string | null
-  stripe_subscription_id: string | null
-  ai_analyses_count: number
-  ai_analyses_reset_at: string
   created_at: string
   updated_at: string
 }

@@ -15,12 +15,6 @@ create table public.profiles (
   id uuid references auth.users on delete cascade primary key,
   full_name text,
   avatar_url text,
-  subscription_tier text not null default 'free'
-    check (subscription_tier in ('free', 'pro')),
-  stripe_customer_id text unique,
-  stripe_subscription_id text unique,
-  ai_analyses_count integer not null default 0,
-  ai_analyses_reset_at timestamp with time zone default now(),
   created_at timestamp with time zone default now(),
   updated_at timestamp with time zone default now()
 );
@@ -194,7 +188,8 @@ create trigger set_updated_at
 
 -- Storage bucket for resumes
 insert into storage.buckets (id, name, public)
-  values ('resumes', 'resumes', false);
+  values ('resumes', 'resumes', false)
+  on conflict (id) do nothing;
 
 -- Storage policies
 create policy "Users can upload own resumes"

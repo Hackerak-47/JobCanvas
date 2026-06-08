@@ -1,0 +1,292 @@
+/* ============================================================
+   Auth Pages — Styles
+   Glassmorphic auth container with animated gradient orbs
+   ============================================================ */
+
+/* ─── Floating orb animation ─────────────────────────────── */
+@keyframes authFloat1 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(30px, -40px) scale(1.05);
+  }
+  50% {
+    transform: translate(-20px, -70px) scale(0.95);
+  }
+  75% {
+    transform: translate(40px, -30px) scale(1.02);
+  }
+}
+
+@keyframes authFloat2 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(-40px, 30px) scale(1.08);
+  }
+  50% {
+    transform: translate(30px, 50px) scale(0.92);
+  }
+  75% {
+    transform: translate(-50px, 20px) scale(1.05);
+  }
+}
+
+@keyframes authFloat3 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(50px, -30px) scale(1.06);
+  }
+  66% {
+    transform: translate(-30px, 40px) scale(0.94);
+  }
+}
+
+/* ─── Layout ─────────────────────────────────────────────── */
+.auth-layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-4);
+}
+
+/* ─── Background Effects ─────────────────────────────────── */
+.auth-bg-effects {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.auth-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+}
+
+.auth-orb-1 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, var(--accent-indigo), transparent 70%);
+  top: -10%;
+  left: -5%;
+  animation: authFloat1 12s ease-in-out infinite;
+}
+
+.auth-orb-2 {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, var(--accent-violet), transparent 70%);
+  bottom: -10%;
+  right: -5%;
+  animation: authFloat2 15s ease-in-out infinite;
+}
+
+.auth-orb-3 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, var(--accent-cyan), transparent 70%);
+  top: 50%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  animation: authFloat3 18s ease-in-out infinite;
+}
+
+/* ─── Container ──────────────────────────────────────────── */
+.auth-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  padding: var(--space-8);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-heavy));
+  -webkit-backdrop-filter: blur(var(--glass-blur-heavy));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-2xl);
+}
+
+/* ─── Logo ───────────────────────────────────────────────── */
+.auth-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.auth-logo-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background: var(--accent-gradient);
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--space-3);
+  box-shadow: var(--shadow-accent);
+}
+
+.auth-logo h1 {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-1);
+}
+
+.auth-logo p {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+/* ─── Form ───────────────────────────────────────────────── */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.auth-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.auth-form-group label {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* ─── Divider ────────────────────────────────────────────── */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: var(--space-2) 0;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-subtle);
+}
+
+.auth-divider span {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ─── OAuth Button ───────────────────────────────────────── */
+.auth-oauth-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  background: var(--glass-bg);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.auth-oauth-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.auth-oauth-btn:active {
+  transform: translateY(0);
+}
+
+.auth-oauth-btn svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* ─── Footer ─────────────────────────────────────────────── */
+.auth-footer {
+  text-align: center;
+  margin-top: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.auth-footer a {
+  color: var(--accent-indigo);
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+
+.auth-footer a:hover {
+  color: var(--accent-violet);
+}
+
+/* ─── Error Alert ────────────────────────────────────────── */
+.auth-error {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  font-size: var(--text-sm);
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: var(--radius-md);
+  animation: slideDown 300ms ease-out both;
+}
+
+/* ─── Password Strength ─────────────────────────────────── */
+.password-strength {
+  display: flex;
+  gap: var(--space-1);
+  margin-top: var(--space-1);
+}
+
+.password-strength-bar {
+  flex: 1;
+  height: 3px;
+  border-radius: var(--radius-full);
+  background: var(--bg-tertiary);
+  transition: background var(--transition-base);
+}
+
+.password-strength-bar.active.weak {
+  background: var(--color-error);
+}
+
+.password-strength-bar.active.medium {
+  background: var(--color-warning);
+}
+
+.password-strength-bar.active.strong {
+  background: var(--color-success);
+}
+
+.password-strength-label {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-top: var(--space-1);
+}
