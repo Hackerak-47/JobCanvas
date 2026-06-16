@@ -15,9 +15,13 @@ export default function LoginPage() {
     const formData = new FormData(e.currentTarget)
 
     startTransition(async () => {
-      const result = await signIn(formData)
-      if (result?.error) {
-        setError(result.error)
+      try {
+        const result = await signIn(formData)
+        if (result?.error) {
+          setError(result.error)
+        }
+      } catch (err: any) {
+        setError("Network Error: Could not reach the server. If you have an extension like StayFree or an adblocker, it is blocking the login request. Please use an Incognito Window.")
       }
     })
   }
