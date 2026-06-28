@@ -156,6 +156,7 @@ export default function SignupPage() {
           <label htmlFor="signup-confirm-password">Confirm Password</label>
           <input
             id="signup-confirm-password"
+            name="confirmPassword"
             type="password"
             className="input-field"
             placeholder="••••••••"
