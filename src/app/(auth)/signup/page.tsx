@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useTransition, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import Link from 'next/link'
-import { signUp, signInWithGitHub } from '@/actions/auth'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 
 function getPasswordStrength(password: string): { level: number; label: string } {
   if (!password) return { level: 0, label: '' }
