@@ -37,10 +37,10 @@ export default function SignupPage() {
 
     const formData = new FormData(e.currentTarget)
     const email = formData.get('email') as string
-    const password = formData.get('password') as string
-    const confirmPassword = formData.get('confirmPassword') as string
     const fullName = formData.get('fullName') as string
 
+    // Use React state variables (password and confirmPassword) for validation 
+    // to completely bypass any hidden HTML attribute caching issues.
     if (password !== confirmPassword) {
       setError("Passwords don't match")
       setIsPending(false)
@@ -50,7 +50,7 @@ export default function SignupPage() {
     try {
       const { error } = await supabase.auth.signUp({
         email,
-        password,
+        password, // Using the React state password
         options: {
           data: { full_name: fullName }
         }
