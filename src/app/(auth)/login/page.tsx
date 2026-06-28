@@ -1,38 +1,55 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
-import { signIn, signInWithGitHub } from '@/actions/auth'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 
 export default function LoginPage() {
   const [error, setError] = useState<string | null>(null)
-  const [isPending, startTransition] = useTransition()
+  const [isPending, setIsPending] = useState(false)
+  const router = useRouter()
+  const supabase = createClient()
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setError(null)
+    setIsPending(true)
 
     const formData = new FormData(e.currentTarget)
+    const email = formData.get('email') as string
+    const password = formData.get('password') as string
 
-    startTransition(async () => {
-      try {
-        const result = await signIn(formData)
-        if (result?.error) {
-          setError(result.error)
-        }
-      } catch (err: any) {
-        setError("Network Error: Could not reach the server. If you have an extension like StayFree or an adblocker, it is blocking the login request. Please use an Incognito Window.")
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+
+      if (error) {
+        setError(error.message)
+        setIsPending(false)
+        return
       }
-    })
+
+      router.push('/dashboard/board')
+      router.refresh()
+    } catch (err: any) {
+      setError(`Crash: ${err.message}`)
+      setIsPending(false)
+    }
   }
 
-  function handleGitHubSignIn() {
-    startTransition(async () => {
-      const result = await signInWithGitHub()
-      if (result?.error) {
-        setError(result.error)
-      }
+  async function handleGitHubSignIn() {
+    setIsPending(true)
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        redirectTo: `${location.origin}/auth/callback`,
+      },
     })
+    if (error) setError(error.message)
+    setIsPending(false)
   }
 
   return (

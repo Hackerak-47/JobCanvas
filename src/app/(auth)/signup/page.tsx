@@ -22,43 +22,63 @@ export default function SignupPage() {
   const [error, setError] = useState<string | null>(null)
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [isPending, startTransition] = useTransition()
+  const [isPending, setIsPending] = useState(false)
+  const router = useRouter()
+  const supabase = createClient()
 
-  const strength = useMemo(() => getPasswordStrength(password), [password])
-
+  const strength = getPasswordStrength(password)
   const strengthClass = strength.level === 1 ? 'weak' : strength.level === 2 ? 'medium' : 'strong'
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setError(null)
-
-    if (password !== confirmPassword) {
-      setError('Passwords do not match.')
-      return
-    }
-
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters.')
-      return
-    }
+    setIsPending(true)
 
     const formData = new FormData(e.currentTarget)
+    const email = formData.get('email') as string
+    const password = formData.get('password') as string
+    const confirmPassword = formData.get('confirmPassword') as string
+    const fullName = formData.get('fullName') as string
 
-    startTransition(async () => {
-      const result = await signUp(formData)
-      if (result?.error) {
-        setError(result.error)
+    if (password !== confirmPassword) {
+      setError("Passwords don't match")
+      setIsPending(false)
+      return
+    }
+
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { full_name: fullName }
+        }
+      })
+
+      if (error) {
+        setError(error.message)
+        setIsPending(false)
+        return
       }
-    })
+
+      router.push('/dashboard/board')
+      router.refresh()
+    } catch (err: any) {
+      setError(`Crash: ${err.message}`)
+      setIsPending(false)
+    }
   }
 
-  function handleGitHubSignIn() {
-    startTransition(async () => {
-      const result = await signInWithGitHub()
-      if (result?.error) {
-        setError(result.error)
-      }
+  async function handleGitHubSignIn() {
+    setIsPending(true)
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        redirectTo: `${location.origin}/auth/callback`,
+      },
     })
+    if (error) setError(error.message)
+    setIsPending(false)
   }
 
   return (
